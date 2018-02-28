@@ -50,7 +50,7 @@ public class Main extends JavaPlugin implements Listener {
 		Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {
 			public void run() {
 				String Tip = Tips.get(tipId);
-				Bukkit.getServer().broadcastMessage("Tip>> " + Tip);
+				Bukkit.getServer().broadcastMessage("Tip>> " + Tip.replaceAll("(&([a-f0-9]))", "\u00A7$2"));
 				tipId++;
 				
 			}
