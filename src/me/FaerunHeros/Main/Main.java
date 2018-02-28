@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,7 +21,8 @@ public class Main extends JavaPlugin implements Listener {
 	private static Main plugin;
 	public Files tipFile;
 	List<String> Tips = new ArrayList();
-	int tipId = 0; 
+	int tipId = 0;
+	int totalTips = 0;
 	
 	
 	@SuppressWarnings("deprecation")
@@ -40,24 +44,46 @@ public class Main extends JavaPlugin implements Listener {
 		}
 		
 		tipFile.loadFile();
-		int totalTips = tipFile.GetStringList("Tips").size();
-		System.out.println("" + totalTips);
+		totalTips = tipFile.GetStringList("Tips").size();
 		
-		if (tipId == totalTips || tipId >= totalTips) {
-			tipId = 0;
-		}
 		Tips = tipFile.GetStringList("Tips");
 		Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, new Runnable() {
 			public void run() {
+				if (tipId == totalTips || tipId >= totalTips) {
+					tipId = 0;
+				}
+				
 				String Tip = Tips.get(tipId);
-				Bukkit.getServer().broadcastMessage("Tip>> " + Tip.replaceAll("(&([a-f0-9]))", "\u00A7$2"));
+				Bukkit.getServer().broadcastMessage("" + Tip.replaceAll("(&([a-f0-9]))", "\u00A7$2"));
 				tipId++;
 				
 			}
-		}, 1, 300*20);
+		}, 1, 30*20);
 	//
 		
 }
+	
+	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+		if ((sender instanceof Player)) {
+			final Player p = (Player) sender;
+			if (p.isOp()) {
+			if (cmd.getName().equalsIgnoreCase("TipReload")) {
+				tipFile.loadFile();
+				totalTips = tipFile.GetStringList("Tips").size();
+				Tips = tipFile.GetStringList("Tips");
+				
+				p.sendMessage(ChatColor.GREEN + "You have successfully reloaded the Tip Data file!");
+				p.sendMessage(ChatColor.AQUA + "The current tips are " + Tips + "!");
+				return true;
+				}
+			}else {
+				return false;
+			}
+		}
+		return false;
+		
+		
+	}
 
 	public void onDisable() {
 		
