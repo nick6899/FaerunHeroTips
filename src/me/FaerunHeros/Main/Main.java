@@ -23,6 +23,7 @@ public class Main extends JavaPlugin implements Listener {
 	List<String> Tips = new ArrayList();
 	int tipId = 0;
 	int totalTips = 0;
+	int sec = 300;
 	
 	
 	@SuppressWarnings("deprecation")
@@ -32,6 +33,8 @@ public class Main extends JavaPlugin implements Listener {
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
 		Bukkit.getServer().getLogger().info("===--Faerun Heroes--===");
 		Bukkit.getServer().getLogger().info("===--Version: 1.0--===");
+		
+		
 		
 		
 	//Tip File Saving
@@ -44,6 +47,8 @@ public class Main extends JavaPlugin implements Listener {
 		}
 		
 		tipFile.loadFile();
+		sec = tipFile.getInt("Delay In Sconds");
+		
 		totalTips = tipFile.GetStringList("Tips").size();
 		
 		Tips = tipFile.GetStringList("Tips");
@@ -58,8 +63,10 @@ public class Main extends JavaPlugin implements Listener {
 				tipId++;
 				
 			}
-		}, 1, 30*20);
+		}, 1, sec*20);
 	//
+		
+		
 		
 }
 	
