@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import me.FaerunHeroes.Listeners.HealthListener;
 import me.FaerunHeroes.Utils.Files;
 
 
@@ -31,6 +32,8 @@ public class Main extends JavaPlugin implements Listener {
 		plugin = this;
 		
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
+		Bukkit.getServer().getPluginManager().registerEvents(new HealthListener(this), this);
+		
 		Bukkit.getServer().getLogger().info("===--Faerun Heroes--===");
 		Bukkit.getServer().getLogger().info("===--Version: 1.0--===");
 		
@@ -82,6 +85,9 @@ public class Main extends JavaPlugin implements Listener {
 				p.sendMessage(ChatColor.GREEN + "You have successfully reloaded the Tip Data file!");
 				p.sendMessage(ChatColor.AQUA + "The current tips are " + Tips + "!");
 				return true;
+				}else if (cmd.getName().equalsIgnoreCase("Health")) {
+					p.sendMessage("" + p.getHealth() + " / " + p.getMaxHealth());
+					return true;
 				}
 			}else {
 				return false;
